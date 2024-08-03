@@ -3,7 +3,6 @@
 namespace App\Livewire\Orders;
 
 use Livewire\Component;
-use App\Http\Repositories\OrdersRepository;
 use App\Models\Order;
 use Livewire\WithPagination;
 
@@ -11,14 +10,7 @@ class Index extends Component
 {
     use WithPagination;
 
-    protected $ordersRepository;
-
     public $searchInputText = '';
-
-    public function __construct()
-    {
-        $this->ordersRepository = new OrdersRepository();
-    }
 
     public function render()
     {
@@ -28,13 +20,13 @@ class Index extends Component
             $ordersQuery->where('client_name', 'like', '%' . $this->searchInputText . '%')
                 ->orWhere('phone_number', 'like', '%' . $this->searchInputText . '%')
                 ->with('product')
-                ->paginate(5);
+                ->paginate(10);
         }
 
         return view('livewire.orders.index', [
             'orders' => $ordersQuery
                 ->with('product')
-                ->paginate(5)
+                ->paginate(10)
                 
         ]);
     }
